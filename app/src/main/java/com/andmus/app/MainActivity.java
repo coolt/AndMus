@@ -1,7 +1,7 @@
 package com.andmus.app;
 
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,7 +9,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -60,6 +61,19 @@ public class MainActivity extends ActionBarActivity {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
             return rootView;
         }
-    }
 
+        @Override
+        public void onActivityCreated(Bundle savedInstanceState) {
+            super.onActivityCreated(savedInstanceState);
+            populateDirectoriesListView();
+        }
+
+        private void populateDirectoriesListView() {
+            String[] directories = {"Toy Dolls","Massia Sound System","Sophie Hunger","Eric Satie"};
+            FragmentActivity activity = getActivity();
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, R.layout.directories_item, directories);
+            ListView list = (ListView) activity.findViewById(R.id.directories);
+            list.setAdapter(adapter);
+        }
+    }
 }
