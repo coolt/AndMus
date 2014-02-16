@@ -1,16 +1,22 @@
 package com.andmus.app;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.ListFragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -50,10 +56,7 @@ public class MainActivity extends ActionBarActivity {
     /**
      * A placeholder fragment containing a simple view.
      */
-    public static class PlaceholderFragment extends Fragment {
-
-        public PlaceholderFragment() {
-        }
+    public static class PlaceholderFragment extends Fragment implements OnItemClickListener {
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,6 +69,7 @@ public class MainActivity extends ActionBarActivity {
         public void onActivityCreated(Bundle savedInstanceState) {
             super.onActivityCreated(savedInstanceState);
             populateDirectoriesListView();
+            // registerClickCallback();
         }
 
         private void populateDirectoriesListView() {
@@ -74,6 +78,44 @@ public class MainActivity extends ActionBarActivity {
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, R.layout.directories_item, directories);
             ListView list = (ListView) activity.findViewById(R.id.directories);
             list.setAdapter(adapter);
+            list.setOnItemClickListener(this);
+       }
+/*
+        private void registerClickCallback(){
+            FragmentActivity activity = getActivity();
+            ListView list = (ListView) activity.findViewById(R.id.directories);
+            list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
+
+                    TextView itemView = (TextView) viewClicked;
+                    String message = itemView.getText().toString();
+                    FragmentActivity activity = getActivity();
+                    Toast.makeText(activity, message, Toast.LENGTH_LONG).show();
+
+                    FragmentActivity activity = getActivity();
+                    Toast.makeText(activity, "abcd", Toast.LENGTH_LONG).show();
+                    ListView listView = (ListView) parent;
+                    listView.showDetails(position);
+                }
+            });
+        }
+*/
+        public void onItemClick(AdapterView l, View v, int position, long id) {
+            FragmentActivity activity = getActivity();
+            Toast.makeText(activity, "abcd", Toast.LENGTH_LONG).show();
+            showFiles(position);
+        }
+
+        void showFiles(int position)  {
+            Intent intent = new Intent();
+            intent.setClass(getActivity(), FilesActivity.class);
+            intent.putExtra("index", position);
+            startActivity(intent);
         }
     }
+
+    public class FilesActivity extends ActionBarActivity{
+
+    }
+
 }
