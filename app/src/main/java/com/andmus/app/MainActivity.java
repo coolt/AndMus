@@ -53,6 +53,19 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public static class FilesActivity extends ActionBarActivity {
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_files);
+
+            if (savedInstanceState == null) {
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.containerFiles, new FilesFragment())
+                        .commit();
+            }
+        }
+    }
+
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -69,7 +82,12 @@ public class MainActivity extends ActionBarActivity {
         public void onActivityCreated(Bundle savedInstanceState) {
             super.onActivityCreated(savedInstanceState);
             populateDirectoriesListView();
-            // registerClickCallback();
+        }
+
+        public void onItemClick(AdapterView l, View v, int position, long id) {
+            FragmentActivity activity = getActivity();
+            Toast.makeText(activity, "abcd", Toast.LENGTH_LONG).show();
+            showFiles(position);
         }
 
         private void populateDirectoriesListView() {
@@ -79,31 +97,6 @@ public class MainActivity extends ActionBarActivity {
             ListView list = (ListView) activity.findViewById(R.id.directories);
             list.setAdapter(adapter);
             list.setOnItemClickListener(this);
-       }
-/*
-        private void registerClickCallback(){
-            FragmentActivity activity = getActivity();
-            ListView list = (ListView) activity.findViewById(R.id.directories);
-            list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
-
-                    TextView itemView = (TextView) viewClicked;
-                    String message = itemView.getText().toString();
-                    FragmentActivity activity = getActivity();
-                    Toast.makeText(activity, message, Toast.LENGTH_LONG).show();
-
-                    FragmentActivity activity = getActivity();
-                    Toast.makeText(activity, "abcd", Toast.LENGTH_LONG).show();
-                    ListView listView = (ListView) parent;
-                    listView.showDetails(position);
-                }
-            });
-        }
-*/
-        public void onItemClick(AdapterView l, View v, int position, long id) {
-            FragmentActivity activity = getActivity();
-            Toast.makeText(activity, "abcd", Toast.LENGTH_LONG).show();
-            showFiles(position);
         }
 
         void showFiles(int position)  {
@@ -114,8 +107,34 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
-    public class FilesActivity extends ActionBarActivity{
+    public static class FilesFragment extends Fragment implements OnItemClickListener {
 
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.fragment_files, container, false);
+            return rootView;
+        }
+
+        @Override
+        public void onActivityCreated(Bundle savedInstanceState) {
+            super.onActivityCreated(savedInstanceState);
+            populateFilesListView();
+        }
+
+        public void onItemClick(AdapterView l, View v, int position, long id) {
+            FragmentActivity activity = getActivity();
+            Toast.makeText(activity, "chuila", Toast.LENGTH_LONG).show();
+            // showFiles(position);
+        }
+
+        private void populateFilesListView() {
+            String[] files = {"Bella Ciao", "Oh, du Fröhliche", "Ho visto un Re"};
+            FragmentActivity activity = getActivity();
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, R.layout.files_item, files);
+            ListView list = (ListView) activity.findViewById(R.id.files);
+            list.setAdapter(adapter);
+            list.setOnItemClickListener(this);
+        }
     }
-
 }
